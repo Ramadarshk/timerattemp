@@ -1,0 +1,43 @@
+package com.example.timerattemp
+
+import android.content.Intent
+import android.os.Bundle
+import android.provider.AlarmClock
+import android.view.View
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v , insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left , systemBars.top , systemBars.right , systemBars.bottom)
+            insets
+        }
+
+    }
+    fun startTimer(message: String, seconds: Int) {
+        val intent = Intent(AlarmClock.ACTION_SET_TIMER).apply {
+            putExtra(AlarmClock.EXTRA_MESSAGE, message)
+            putExtra(AlarmClock.EXTRA_LENGTH, seconds)
+            putExtra(AlarmClock.EXTRA_SKIP_UI, true)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+    fun on5(view: View) {
+        startTimer("drink milk",5*60)
+    }
+    fun on3(view: View) {
+        startTimer("off water motor",3*60)
+    }
+    fun on7(view: View) {
+        startTimer("toast is ready",7*60)
+    }
+}
